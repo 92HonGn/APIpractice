@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en-US">
+
+<head>
+    <meta charset="utf-8">
+
+    <title>Github API Webapp using jQuery - Treehouse Demo</title>
+    <meta name="author" content="Jake Rocheleau">
+    <link rel="shortcut icon" href="http://d15dxvojnvxp1x.cloudfront.net/assets/favicon.ico">
+    <link rel="icon" href="http://d15dxvojnvxp1x.cloudfront.net/assets/favicon.ico">
+
+
+</head>
+
+<body>
+    <div id="vueapp">
+        <input type="text" @change="xhr" v-model="searchDefault" />
+        <a href="#" @click.prevent="xhr">sss</a>
+        <div class="result__user">
+            <div class="users">
+                <h3>{{info.name}}</h3>
+
+            </div>
+
+        </div>
+    </div>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.8/vue.js'></script>
+    <!-- <script src='https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.js'></script> -->
+    <!-- <script>
+        var vm = new Vue({
+            el: '#app',
+            data: {
+                users: [],
+                searchDefault: 'Alex',
+                errorMessage: ''
+            },
+            created: function() {
+                this.fetchData()
+            },
+            methods: {
+                fetchData: function() {
+                    var username = this.searchDefault.toLowerCase();
+                    var self = this
+                    var requri = 'https://api.github.com/users/' + self.searchDefault;
+                    axios.get(requri)
+                        .then(function(response) {
+                            console.log(response);
+                            if (response.data.error) {
+                                vm.errorMessage = response.data.message;
+                            } else {
+                                vm.users = response.data;
+                            }
+                        })
+                    console.log(this.users);
+                }
+            }
+
+        })
+    </script> -->
+    <script>
+        'use strict';
+
+        new Vue({
+            el: '#vueapp',
+            data: {
+                url: "https://api.github.com/users/",
+                searchDefault: 'Alex',
+                info: []
+            },
+            methods: {
+                xhr: function() {
+                    this.info = "Requesting ...";
+                    var rq = new XMLHttpRequest();
+
+                    rq.onreadystatechange = function(vm) {
+                        if (this.readyState === XMLHttpRequest.DONE) {
+                            if (this.status === 200) {
+                                vm.info = JSON.parse(this.responseText);
+                                console.log(vm.info);
+                            } else {
+                                vm.info = "Request Failed";
+                            }
+                        }
+                    }.bind(rq, this);
+
+                    rq.open("GET", this.url + this.searchDefault);
+                    rq.send();
+                }
+            }
+        })
+    </script>
+
+</body>
+
+</html>

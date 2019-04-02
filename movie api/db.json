@@ -1,0 +1,33 @@
+{
+    "movie": [{
+            "name": "復仇者聯盟：終局之戰",
+            "trailer": "https://www.youtube.com/embed/ZrB7EdfPBJU",
+            "poster": "https://cdn.hk01.com/di/media/images/2554448/org/9ac435fc9bbefd29305d9f18991bce49.jpg/uwT31xfRZod9EjxDzUdm6V8nYa96xvW9A01qOwNNajs?v=w1920",
+            "year": "2019"
+        },
+        {
+            "name": "驚奇隊長",
+            "trailer": "https://www.youtube.com/embed/8_iXX6t6nFY",
+            "poster": "https://i.kfs.io/playlist/global/63979361v1/fit/500x500.jpg",
+            "year": "2018"
+        },
+        {
+            "name": "戰鬥天使：艾莉塔",
+            "trailer": "https://www.youtube.com/embed/N8C_bF_a2ec",
+            "poster": "https://img.edwardmovieclub.com/uploads/20190205203507_22.jpg",
+            "year": "2018"
+        },
+        {
+            "name": "蜘蛛人：新宇宙",
+            "trailer": "https://www.youtube.com/embed/T7LUPZJAxk8",
+            "poster": "https://img.edwardmovieclub.com/uploads/20181207212145_100.jpg",
+            "year": "2018"
+        },
+        {
+            "name": "我的英雄學員：兩個人的英雄",
+            "trailer": "https://www.youtube.com/embed/mYcUUwfgEIg",
+            "poster": "https://i.gbc.tw/gb_img/8/003/808/3808518n.jpg",
+            "year": "2018"
+        }
+    ]
+}

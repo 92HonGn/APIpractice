@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+    <style>
+        h1 {
+            margin: 100px 0;
+        }
+        
+        .btn-list {
+            margin: 20px 0;
+        }
+        
+        .btn-list .btn {
+            margin: 10px;
+        }
+        
+        .card a {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: #000;
+        }
+    </style>
+
+</head>
+
+<body>
+    <div class="container" id="app">
+        <h1 class="d-flex justify-content-center">維基百科<span class="badge badge-secondary">API 搜尋</span></h1>
+        <form action="" @submit.prevent="submitSearch">
+            <input class="form-control form-control-lg" type="text" v-model="searchQuery">
+            <a v-show="searchQuery" @click="removeSearchQuery">X</a>
+        </form>
+        <div class="btn-list d-flex justify-content-center">
+            <a type="button" class="btn btn-outline-success" @click="submitSearch">搜尋</a>
+            <a href="http://zh.wikipedia.org/wiki/Special:Random" class="btn btn-outline-success">好手氣</a>
+        </div>
+        <div class="card" v-show="isResult" transition="expand">
+            <a href="http://zh.wikipedia.org/?curid={{ elem.pageid }}" v-for="elem in wikiObj">
+                <h5 class="card-header">{{elem.title}}</h5>
+                <div class="card-body">
+                    <h5 class="card-title">{{elem.title}}</h5>
+                    <p class="card-text">{{elem.extract}}</p>
+                </div>
+            </a>
+        </div>
+    </div>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.9/vue.js'></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/vue-resource/1.5.1/vue-resource.js'></script>
+    <script>
+        Vue.filter('htmlEscape', function(value) {
+            return value.replace(/\&amp\;/g, '&');
+        });
+        Vue.filter('dateTime', function(val) {
+            return new Date(val).toGMTString().slice(0, -13);
+        });
+        var vm = new Vue({
+            el: '#app',
+            data: {
+                wikiObj: null,
+                isResult: false,
+                searchQuery: '',
+            },
+            computed: {
+
+            },
+            ready: function() {},
+            methods: {
+                removeSearchQuery: function() {
+                    this.searchQuery = '';
+                    this.isResult = false;
+                },
+                submitSearch: function() {
+                    var reqURL =
+                        "https://zh.wikipedia.org/w/api.php?action=query&generator=search&gsrnamespace=0&exsentences=1&exintro&explaintext&exlimit=max&prop=extracts&gsrlimit=10&gsrsearch=" +
+                        this.searchQuery + "&format=json";
+
+                    this.$http.jsonp(reqURL).then(function(response) {
+                        this.wikiObj = response.data.query.pages;
+                        this.isResult = true;
+                    }, function(response) {
+                        console.log(response);
+                    });
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>
+
+<!-- https://ithelp.ithome.com.tw/articles/10196319 -->
+<

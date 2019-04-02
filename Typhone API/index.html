@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="main.css">
+</head>
+
+<body>
+    <nav>
+        <div>
+            <h1>臺北<span>市</span></h1>
+            <h1>颱風災害動態資訊</h1>
+        </div>
+    </nav>
+    <main>
+        <div>
+            <div class="info">
+                <p>防災災情及相關諮詢電話：87863119</p>
+                <p>分機：8900-8907</p>
+            </div>
+            <div class="search-bar">
+                <section>
+                    <div class="title">受災地區：</div>
+                    <div class="select">
+                        <div class="select__display dist">所有受災地區</div>
+                        <ul class="select__option dist hide">
+                            <li>所有受災地區</li>
+                        </ul>
+                    </div>
+                </section>
+                <section>
+                    <div class="title">災害類型：</div>
+                    <div class="select">
+                        <div class="select__display type placeholder">- 請選擇災害類型 -</div>
+                        <ul class="select__option type hide">
+                            <li>所有災害類型</li>
+                        </ul>
+                    </div>
+                </section>
+                <section>
+                    <div class="title">是否處理完成：</div>
+                    <div class="select">
+                        <div class="select__display complete placeholder">- 請選擇是否完成 -</div>
+                        <ul class="select__option complete hide">
+                            <li>不選擇</li>
+                            <li>已經處理完成</li>
+                            <li>尚未處理完成</li>
+                        </ul>
+                    </div>
+                </section>
+            </div>
+            <div class="search-info">
+                <div class="search-info__summary">共有 <span></span> 筆資料</div>
+                <div class="search-info__display"><span>一次顯示 </span><span class="num active">20</span><span> / </span><span class="num">40</span><span> / </span><span class="num">80</span><span> 筆</span></div>
+            </div>
+            <div class="search-result"></div>
+            <div class="pagination">
+                <button class="prev disabled"><i class="fas fa-angle-double-left"></i></button>
+                <button class="next"><i class="fas fa-angle-double-right"></i></button>
+            </div>
+        </div>
+    </main>
+    <footer>
+        <p>臺北市 <span>颱風災害動態資訊</span></p>
+        <p>資料來源：臺北市政府 消防局EOC 開放資料專區</p>
+    </footer>
+    <script src="all.js"></script>
+</body>
+
+</html>

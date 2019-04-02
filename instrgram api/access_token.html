@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <button class="authorize" onClick="authFunc()">Authorize</button>
+    <div class="container"></div>
+
+    <script>
+        var getAuthUrl =
+            "https://api.instagram.com/oauth/authorize/?client_id=b7322f8403f345e7b5e4047f25d1f1fa&redirect_uri=https://codepen.io/BenHsiehHikari/pen/vPyvJR&response_type=token"
+
+        function authFunc() {
+            var win = window.open(getAuthUrl, "auth_window");
+        }
+
+        var accessToken = window.location.hash.replace('#', '?')
+        console.log(accessToken);
+
+
+        var xhr = new XMLHttpRequest();
+
+        xhr.addEventListener("readystatechange", function() {
+            if (this.readyState === 4) {
+                var response = JSON.parse(this.responseText)
+                console.log(response);
+                response.data.map(function(item) {
+
+                    var img = document.createElement('img');
+                    img.src = item.images.low_resolution.url;
+                    document.querySelector(".container").appendChild(img);
+
+                })
+            }
+        });
+
+        xhr.open("GET", "https://api.instagram.com/v1/users/self/media/recent/" + accessToken);
+
+        xhr.send();
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>JS Bin</title>
+</head>
+
+<body>
+    <div id="demo">
+        <h1>Latest Vue.js Commits</h1>
+        <template v-for="branch in branches">
+            <input type="radio" :value="branch" v-model="currentBranch">
+            {{ branch }}
+        </template>
+        <p>vuejs/vue@{{ currentBranch }}</p>
+        <ul>
+            <li v-for="record in commits">
+                <a :href="record.html_url" target="_blank" class="commit">更新紀錄</a> - by <span class="author"><a :href="record.author.html_url"
+                        target="_blank">{{ record.commit.author.name
+                        }}</a></span> at <span class="date">{{ record.commit.author.date }}</span>
+            </li>
+        </ul>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.0.3/vue.js"></script>
+        <script>
+            var apiURL = 'https://api.github.com/repos/vuejs/vue/commits?per_page=3&sha=';
+            var demo = new Vue({
+                el: '#demo',
+                data: {
+                    branches: ['master', 'dev'],
+                    currentBranch: 'master',
+                    commits: null
+                },
+
+                created: function() {
+                    this.fetchData()
+                },
+
+                watch: {
+                    currentBranch: 'fetchData'
+                },
+                methods: {
+                    fetchData: function() {
+                        var xhr = new XMLHttpRequest()
+                        var self = this
+                        xhr.open('GET', apiURL + self.currentBranch)
+                        xhr.onload = function() {
+                            self.commits = JSON.parse(xhr.responseText)
+                            console.log(self.commits[0].html_url)
+                        }
+                        xhr.send()
+                    }
+                }
+            })
+        </script>
+    </div>
+    <script type="text/javascript">
+        $(function() {
+            $('#ghsubmitbtn').on('click', function(e) {
+                e.preventDefault();
+                $('#ghapidata').html(
+                    '<div id="loader"><img src="css/loader.gif" alt="loading..."></div>');
+
+                var username = $('#ghusername').val();
+                var requri = 'https://api.github.com/users/' + username;
+                var repouri = 'https://api.github.com/users/' + username + '/repos';
+
+                requestJSON(requri, function(json) {
+                    if (json.message == "Not Found" || username == '') {
+                        $('#ghapidata').html("<h2>No User Info Found</h2>");
+                    } else {
+                        // else we have a user and we display their info
+                        var fullname = json.name;
+                        var username = json.login;
+                        var aviurl = json.avatar_url;
+                        var profileurl = json.html_url;
+                        var location = json.location;
+                        var followersnum = json.followers;
+                        var followingnum = json.following;
+                        var reposnum = json.public_repos;
+
+                        if (fullname == undefined) {
+                            fullname = username;
+                        }
+
+                        var outhtml = '<h2>' + fullname +
+                            ' <span class="smallname">(@<a href="' + profileurl +
+                            '" target="_blank">' + username + '</a>)</span></h2>';
+                        outhtml = outhtml + '<div class="ghcontent"><div class="avi"><a href="' +
+                            profileurl + '" target="_blank"><img src="' + aviurl +
+                            '" width="80" height="80" alt="' + username + '"></a></div>';
+                        outhtml = outhtml + '<p>Followers: ' + followersnum + ' - Following: ' +
+                            followingnum + '<br>Repos: ' + reposnum + '</p></div>';
+                        outhtml = outhtml + '<div class="repolist clearfix">';
+
+                        var repositories;
+                        $.getJSON(repouri, function(json) {
+                            repositories = json;
+                            outputPageContent();
+                        });
+
+                        function outputPageContent() {
+                            if (repositories.length == 0) {
+                                outhtml = outhtml + '<p>No repos!</p></div>';
+                            } else {
+                                outhtml = outhtml + '<p><strong>Repos List:</strong></p> <ul>';
+                                $.each(repositories, function(index) {
+                                    outhtml = outhtml + '<li><a href="' + repositories[
+                                            index].html_url + '" target="_blank">' +
+                                        repositories[index].name + '</a></li>';
+                                });
+                                outhtml = outhtml + '</ul></div>';
+                            }
+                            $('#ghapidata').html(outhtml);
+                        } // end outputPageContent()
+                    } // end else statement
+                }); // end requestJSON Ajax call
+            }); // end click event handler
+
+            function requestJSON(url, callback) {
+                $.ajax({
+                    url: url,
+                    complete: function(xhr) {
+                        callback.call(null, xhr.responseJSON);
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+
+</html>
